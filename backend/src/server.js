@@ -1,9 +1,9 @@
 // Import các thư viện cần thiết
-import express from "express";           // Framework tạo server HTTP
-import "dotenv/config";                  // Đọc các biến môi trường từ file .env
-import cookieParser from "cookie-parser";// Dùng để đọc và xử lý cookie
-import cors from "cors";                 // Cho phép truy cập từ domain khác (Cross-Origin Resource Sharing)
-import path from "path";                 // Xử lý đường dẫn file/thư mục trong hệ thống
+import express from "express"; // Framework tạo server HTTP
+import "dotenv/config"; // Đọc các biến môi trường từ file .env
+import cookieParser from "cookie-parser"; // Dùng để đọc và xử lý cookie
+import cors from "cors"; // Cho phép truy cập từ domain khác (Cross-Origin Resource Sharing)
+import path from "path"; // Xử lý đường dẫn file/thư mục trong hệ thống
 
 // Import các route (đường dẫn API)
 import authRoutes from "./routes/auth.route.js"; // Xử lý các API liên quan đến đăng nhập/đăng ký
@@ -21,12 +21,14 @@ const PORT = process.env.PORT; // Lấy cổng từ biến môi trường (.env)
 const __dirname = path.resolve();
 
 // Cấu hình CORS – cho phép frontend (localhost:5173) truy cập API backend
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Domain frontend (Vite hoặc React)
-    credentials: true,               // Cho phép gửi cookie từ frontend
-  })
-);
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173", // Domain frontend (Vite hoặc React)
+      credentials: true, // Cho phép gửi cookie từ frontend
+    })
+  );
+}
 
 // Cho phép Express tự động parse dữ liệu JSON từ request body
 app.use(express.json());
@@ -36,7 +38,7 @@ app.use(cookieParser());
 
 // Định nghĩa các route API
 app.use("/api/auth", authRoutes); // Các endpoint bắt đầu bằng /api/auth
-app.use("/api/users", userRoutes);// Các endpoint bắt đầu bằng /api/users
+app.use("/api/users", userRoutes); // Các endpoint bắt đầu bằng /api/users
 app.use("/api/chat", chatRoutes); // Các endpoint bắt đầu bằng /api/chat
 
 // Cấu hình cho môi trường Production (khi deploy)
@@ -46,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Xử lý tất cả request không khớp route → trả về file index.html (SPA)
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
 
