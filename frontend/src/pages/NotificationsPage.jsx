@@ -125,7 +125,7 @@ const NotificationsPage = () => {
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <BellIcon className="h-5 w-5 text-success" />
-                  New Connections
+                 Accepted Requests
                 </h2>
 
                 <div className="space-y-3">
@@ -173,7 +173,7 @@ const NotificationsPage = () => {
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <BellIcon className="h-5 w-5 text-error" />
-                  Rejected Requests
+                  Declined Requests
                 </h2>
 
                 <div className="space-y-3">
@@ -198,7 +198,8 @@ const NotificationsPage = () => {
                               {notification.recipient.fullName}
                             </h3>
                             <p className="text-sm my-1">
-                              declined your friend request
+                              {notification.recipient.fullName} declined your
+                              friend request
                             </p>
                             <p className="text-xs flex items-center opacity-60">
                               <ClockIcon className="h-3 w-3 mr-1" />
